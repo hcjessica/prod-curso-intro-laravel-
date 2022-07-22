@@ -8,11 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+    
+    //atributos que serán enviados en masa
+    protected $fillable = [
+        'title',
+        'slug',
+        'body',
+    ];
 
     //indicando que hay una relación con tabla usuarios
     public function user()
     {
-        //pertenece a la tabla Usuarios
+        //pertenencia a la tabla Usuarios
         return $this->belongsTo(User::class);
     }
 }

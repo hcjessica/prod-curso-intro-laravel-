@@ -8,9 +8,25 @@ use App\Models\Post;
 class PageController extends Controller
 {
     //
-    public function home()
+    public function home(Request $request)
     {
-        return view('home');
+        
+        //dd($_REQUEST); //lenguaje PHP
+        //dd($request->all()); //con laravel, más amigable lo que hace el lenguaje de PHP
+        $search = $request->search;
+        $posts = Post::where('title', 'LIKE', "%{$search}%")->with('user')->latest()->paginate();//filtro para busqueda de titulos de post
+
+        /*
+        if(!isset($request->search))//verifica si está recibiendo una petición
+        {
+            $posts = Post::latest()->paginate(); //Lista todas las publicaciones de orden desc y paginado
+        }else{
+            $search = $request->search;
+            $posts = Post::where('title', 'LIKE', "%{$search}%")->latest()->paginate();//filtro para busqueda de titulos de post
+        }
+        */
+        
+        return view('home', ['posts' => $posts]);
     }
 
     public function blog()
